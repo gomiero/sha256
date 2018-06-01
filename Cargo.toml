@@ -1,0 +1,12 @@
+[package]
+name = "sha256"
+version = "0.1.0"
+authors = ["Alexandre Gomiero de Oliveira <gomiero@gmail.com>"]
+keywords = ["sha256", "cryptography"]
+license-file = "LICENSE"
+readme = "README.md"
+publish = false
+
+[profile.dev]
+debug = true
+overflow-checks = false
