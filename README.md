@@ -6,7 +6,7 @@ Esta implementação é apenas didática e não oferece desempenho para ambiente
 
 ---
 
-A didatic implementation of SHA256.
+A didactic implementation of SHA256.
 
 This implementation is just didatic and sould not be used for production environments.
 
