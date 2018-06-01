@@ -8,7 +8,7 @@ Esta implementação é apenas didática e não oferece desempenho para ambiente
 
 A didactic implementation of SHA256.
 
-This implementation is just didatic and sould not be used for production environments.
+This implementation is just didactic and sould not be used for production environments.
 
 ---
 Referência: [Wikipedia: SHA-2][1]
