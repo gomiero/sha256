@@ -1,8 +1,27 @@
+// MIT License
+// 
+// Copyright (c) 2018 Alexandre Gomiero de Oliveira
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 
-/**
- * Converte um array de 4 bytes em u32 Big Endian
- */
+// Converte um array de 4 bytes em u32 Big Endian
 #[inline]
 fn conv(x: &[u8]) -> Option<u32> {
     let ret: u32 = unsafe { std::mem::transmute::<[u8; 4], u32>([
@@ -14,11 +33,9 @@ fn conv(x: &[u8]) -> Option<u32> {
     Some(ret)
 }
 
-/**
- * Calcula o hash SHA256
- * Parametro: [b] str String estática
- * Retorno: String String hexadecimal contendo o hash
- */
+// Calcula o hash SHA256
+// Parâmetro: [b] str String estática
+// Retorno: String hexadecimal contendo o hash
 pub fn sha256(b: &str) -> String {
     // Inicialização das variáveis
     // Primeiros 32 bits da parte fracional da raiz quadrada dos 8 primeiros números primos
@@ -30,6 +47,7 @@ pub fn sha256(b: &str) -> String {
     let mut h5: u32 = 0x9b05688c;
     let mut h6: u32 = 0x1f83d9ab;
     let mut h7: u32 = 0x5be0cd19;
+    
     // Array de constantes
     // Primeiros 32 bits da parte fracional da raiz cúbica dos 64 primeiros números primos
     let k: Vec<u32> =
@@ -41,6 +59,7 @@ pub fn sha256(b: &str) -> String {
              0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
              0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
              0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2];
+    
     // Converte a str em um array de bytes, em seguida, em um Vec<u8>
     let mut vb: Vec<u8> = b.as_bytes().to_vec();
     // Armazena o comprimento do array
@@ -49,7 +68,7 @@ pub fn sha256(b: &str) -> String {
     // ==> Início do algoritmo <==
     // Acrescenta 1 bit (0x80) na mensagem
     vb.push(0x80);
-    // Calcula o tamanho do pad (56 - o tamanho mais o byte 0x80 % 64 (que Ã© o 512bit)
+    // Calcula o tamanho do pad (56 - o tamanho mais o byte 0x80 % 64 (= 512 bits)
     let padsize: usize = (56 - (vlen+1) % 64) as usize;
     // Cria o vetor pad
     let mut num: Vec<u8> = vec![0u8; padsize];
@@ -61,7 +80,7 @@ pub fn sha256(b: &str) -> String {
     vb.append(&mut tamanho.to_vec());  
     
      // Divide a mensagem em chunks de 64 bytes (512 bits)
-    for mut ck in vb.chunks(64) {
+    for ck in vb.chunks(64) {
         // Cria um array de 64 entradas de palavras de 32-bit
         // Os valores iniciais não importam
         let mut w: Vec<u32> = Vec::with_capacity(64);
@@ -106,7 +125,7 @@ pub fn sha256(b: &str) -> String {
             b = a;
             a = temp1 + temp2;
         }
-        // Adiciona o chunk já comprimido ao hasj
+        // Adiciona o chunk já comprimido ao hash
         h0 += a;
         h1 += b;
         h2 += c;
@@ -128,8 +147,7 @@ pub fn sha256(b: &str) -> String {
                          h7))
 }
 
-// Caso dê erro de overflow, setar a variável de ambiente:  C:> set RUSTFLAGS=-C overflow-checks=off
-
+// Função de entrada
 fn main() {
     // Testes - string vazia, deve retornar => e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     let s = "";
