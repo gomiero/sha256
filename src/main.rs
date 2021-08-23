@@ -24,12 +24,7 @@
 // Converte um array de 4 bytes em u32 Big Endian
 #[inline]
 fn conv(x: &[u8]) -> Option<u32> {
-    let ret: u32 = unsafe { std::mem::transmute::<[u8; 4], u32>([
-        x[3],
-        x[2],
-        x[1],
-        x[0]
-    ]) };
+    let ret: u32 = u32::from_ne_bytes([x[3], x[2], x[1], x[0]]);
     Some(ret)
 }
 
